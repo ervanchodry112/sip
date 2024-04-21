@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->text('user_foto')->nullable();
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
+            $table->enum('user_level', ['admin', 'pegawai'])->default('pegawai');
+            $table->enum('user_status', ['Y', 'N'])->default('Y');
             $table->rememberToken();
             $table->timestamps();
         });

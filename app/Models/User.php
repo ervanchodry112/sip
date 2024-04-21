@@ -17,9 +17,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_foto',
         'name',
         'username',
         'password',
+        'user_level',
+        'user_status',
     ];
 
     /**
@@ -43,5 +46,22 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'id_user', 'id');
+    }
+
+    public function saveUser()
+    {
+        $this->save();
+
+        return $this->cart()->create();
+    }
+
+    public function updateUser($data)
+    {
+        return $this->update($data);
     }
 }

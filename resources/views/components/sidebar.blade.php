@@ -3,7 +3,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link " href="#">
+            <a class="nav-link collapsed" href="{{ route('home') }}">
                 <i class="bi bi-house-door"></i>
                 <span>Home</span>
             </a>
@@ -15,12 +15,17 @@
             </a>
             <ul id="master-data" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="#">
+                    <a href="{{ route('produk.index') }}">
                         <i class="bi bi-circle"></i><span>Produk</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('satuan.index') }}">
+                        <i class="bi bi-circle"></i><span>Satuan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('user.index') }}">
                         <i class="bi bi-circle"></i><span>Users</span>
                     </a>
                 </li>
