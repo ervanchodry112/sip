@@ -26,7 +26,14 @@ class AuthController extends Controller
 
         $user = User::where('username', $request->username)->first();
 
+        if((!empty($user->tokens))){
+            $user->tokens()->delete();
+        }
+
+        $token = $user->createToken('auth')->plainTextToken;
+
         Auth::login($user);
+        session(['token' => $token]);
 
         return to_route('home');
     }

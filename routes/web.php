@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,5 +23,6 @@ Route::middleware('auth')->group(function () {
         'produk'    => BarangController::class,
         'satuan'    => SatuanController::class,
         'user'      => UserController::class,
+        'penjualan' => PenjualanController::class,
     ]);
 });

@@ -41,7 +41,7 @@
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{ route('penjualan.index') }}">
                 <i class="bi bi-table"></i>
                 <span>Penjualan</span>
             </a>

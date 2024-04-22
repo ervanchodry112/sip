@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -14,3 +16,8 @@ Route::get('/user', function (Request $request) {
 Route::get('/satuan', [SatuanController::class, 'search'])->name('satuan.search');
 Route::get('/produk', [BarangController::class, 'search'])->name('produk.search');
 Route::get('/user', [UserController::class, 'search'])->name('user.search');
+Route::get('/penjualan', [PenjualanController::class, 'search'])->name('penjualan.search');
+Route::get('/penjualan/produk', [PenjualanController::class, 'searchProduk'])->name('penjualan.searchProduk');
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/cart', [CartController::class, 'add'])->name('cart.add');
+});

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,12 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        //
+        $data = [
+            'title'     => 'Penjualan',
+            'penjualan' => Penjualan::paginate(25),
+        ];
+
+        return view('pages.penjualan.index', $data);
     }
 
     /**
@@ -20,7 +26,13 @@ class PenjualanController extends Controller
      */
     public function create()
     {
-        //
+        $data = [
+            'title'     => 'Tambah Penjualan',
+            'products'  => Barang::get(),
+            'carts'     => auth()->user()->cart->detail,
+        ];
+
+        return view('pages.penjualan.create', $data);
     }
 
     /**
@@ -61,5 +73,41 @@ class PenjualanController extends Controller
     public function destroy(Penjualan $penjualan)
     {
         //
+    }
+
+    public function search(Request $request){
+        $search = "%$request->search%";
+        $produk = Penjualan::where('tgl_penjualan', 'like', $search)->with('satuan')->get();
+        if (empty($produk->toArray())) {
+            $response = [
+                'status'    => 404,
+                'message'   => 'Data tidak ditemukan',
+            ];
+        } else {
+            $response = [
+                'status'    => 200,
+                'data'      => $produk,
+            ];
+        }
+
+        return response($response);
+    }
+
+    public function searchProduk(Request $request){
+        $search = "%$request->search%";
+        $produk = Barang::where('nmbrg', 'like', $search)->orWhere('kdbrg', 'like', $search)->with('satuan')->get();
+        if (empty($produk->toArray())) {
+            $response = [
+                'status'    => 404,
+                'message'   => 'Data tidak ditemukan',
+            ];
+        } else {
+            $response = [
+                'status'    => 200,
+                'data'      => $produk,
+            ];
+        }
+
+        return response($response);
     }
 }
