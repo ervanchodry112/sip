@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens ,Notifiable;
+    use HasFactory, HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -54,6 +56,12 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class, 'id_user', 'id');
     }
 
+    public function penjualan()
+    {
+        return $this->hasMany(Penjualan::class, 'created_by', 'id');
+    }
+
+    // CRUD
     public function saveUser()
     {
         $this->save();
@@ -64,5 +72,43 @@ class User extends Authenticatable
     public function updateUser($data)
     {
         return $this->update($data);
+    }
+
+    public function resetCart()
+    {
+        return $this->cart->resetCart();
+    }
+
+    public function checkout()
+    {
+        $data = [
+            'tgl_penjualan' => now()->toDateString(),
+            'jam_penjualan' => now()->toTimeString(),
+            'total'         => $this->cart->subtotal,
+        ];
+        if (!$this->penjualan()->create($data)) {
+            throw new Exception('Gagal menyimpan data penjualan');
+        }
+        $this->cart()->update([
+            'subtotal'      => 0,
+            'total_item'    => 0,
+        ]);
+        $penjualan = $this->penjualan()->orderBy('created_at', 'DESC')->first();
+
+        foreach($this->cart->detail as $detail){
+            $data = [
+                'id_barang' => $detail->id_barang,
+                'jumlah'    => $detail->subtotal,
+                'quantity'  => $detail->quantity,
+            ];
+            if(!$penjualan->detail()->create($data)){
+                throw new Exception('Gagal menyimpan data penjualan!');
+            }
+        }
+        if(!$this->cart->detail()->delete()){
+            throw new Exception('Gagal menyimpan data penjualan!');
+        }
+        $this->refresh();
+        return $penjualan;
     }
 }

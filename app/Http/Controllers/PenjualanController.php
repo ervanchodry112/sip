@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Penjualan;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
 {
@@ -40,7 +42,24 @@ class PenjualanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $request->user();
+        DB::beginTransaction();
+        try {
+            $penjualan = $user->checkout();
+            $response = [
+                'status'    => 201,
+                'data'      => $penjualan,
+            ];
+            DB::commit();
+            return response($response, 201);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $response = [
+                'status'    => 500,
+                'message'   => $e->getMessage()
+            ];
+            return response($response, 500);
+        }
     }
 
     /**
@@ -75,7 +94,8 @@ class PenjualanController extends Controller
         //
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $search = "%$request->search%";
         $produk = Penjualan::where('tgl_penjualan', 'like', $search)->with('satuan')->get();
         if (empty($produk->toArray())) {
@@ -93,7 +113,8 @@ class PenjualanController extends Controller
         return response($response);
     }
 
-    public function searchProduk(Request $request){
+    public function searchProduk(Request $request)
+    {
         $search = "%$request->search%";
         $produk = Barang::where('nmbrg', 'like', $search)->orWhere('kdbrg', 'like', $search)->with('satuan')->get();
         if (empty($produk->toArray())) {

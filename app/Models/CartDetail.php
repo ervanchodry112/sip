@@ -27,4 +27,9 @@ class CartDetail extends Model
     {
         return $this->belongsTo(Barang::class, 'id_barang', 'id');
     }
+
+    // CRUD
+    public function updateQty($data){
+        return $this->update($data);
+    }
 }

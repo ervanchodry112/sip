@@ -25,4 +25,12 @@ class Cart extends Model
     public function detail(){
         return $this->hasMany(CartDetail::class, 'id_cart', 'id');
     }
+
+    public function updateCart($data){
+        return $this->update($data);
+    }
+
+    public function resetCart(){
+        return $this->detail()->delete();
+    }
 }
