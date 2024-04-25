@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Penjualan\CreatePenjualanRequest;
 use App\Models\Barang;
 use App\Models\Penjualan;
 use Exception;
@@ -40,12 +41,12 @@ class PenjualanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreatePenjualanRequest $request)
     {
         $user = $request->user();
         DB::beginTransaction();
         try {
-            $penjualan = $user->checkout();
+            $penjualan = $user->checkout($request->bayar, $request->kembali);
             $response = [
                 'status'    => 201,
                 'data'      => $penjualan,
@@ -67,23 +68,12 @@ class PenjualanController extends Controller
      */
     public function show(Penjualan $penjualan)
     {
-        //
-    }
+        $data = [
+            'title' => 'Detail Penjualan',
+            'penjualan' => $penjualan,
+        ];
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Penjualan $penjualan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Penjualan $penjualan)
-    {
-        //
+        return view('pages.penjualan.show', $data);
     }
 
     /**
@@ -91,7 +81,17 @@ class PenjualanController extends Controller
      */
     public function destroy(Penjualan $penjualan)
     {
-        //
+        DB::beginTransaction();
+        try {
+            if (!$penjualan->deletePenjualan()) {
+                throw new Exception('Gagal menghapus data penjualan!');
+            }
+            DB::commit();
+            return to_route('penjualan.index')->with('success', 'Berhasil menghapus data penjualan!');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function search(Request $request)
@@ -130,5 +130,12 @@ class PenjualanController extends Controller
         }
 
         return response($response);
+    }
+
+    public function bukti_transaksi(Penjualan $penjualan){
+        $data = [
+            'penjualan' => $penjualan
+        ];
+        return view('report.bukti-transaksi', $data);
     }
 }

@@ -29,44 +29,76 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>
+                                    <th class="text-center" style="width: 5%;">
                                         No.
                                     </th>
-                                    <th>Tgl</th>
-                                    <th>Waktu</th>
-                                    <th>Produk</th>
-                                    <th>Total</th>
-                                    <th>Aksi</th>
+                                    <th class="text-center" style="width: 15%;">Tgl</th>
+                                    <th class="text-center" style="width: 10%">Waktu</th>
+                                    <th class="text-center" style="width: 45%;">Produk</th>
+                                    <th class="text-center" style="width: 15%;">Total</th>
+                                    <th class="text-center" style="width: 10%;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="table-data">
                                 @php
                                     $i = 1;
+
                                 @endphp
                                 @forelse ($penjualan as $item)
                                     <tr>
-                                        <td>{{ $i++ }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($item->tgl_penjualan) }}</td>
-                                        <td>{{ $item->jam_penjualan }}</td>
+                                        <td class="text-center align-middle">{{ $i++ }}</td>
+                                        <td class="text-center align-middle">
+                                            {{ \Carbon\Carbon::parse($item->tgl_penjualan)->isoFormat('D MMMM Y') }}</td>
+                                        <td class="text-center align-middle">{{ $item->jam_penjualan }} WIB</td>
                                         <td>
                                             <ul>
+                                                @php
+                                                    $j = 1;
+                                                @endphp
                                                 @foreach ($item->detail as $detail)
-                                                    <li>{{ $detail }}</li>
+                                                    <li style="list-style: none;">
+                                                        <div>
+                                                            <span class="fw-bold">{{ $detail->barang->nmbrg }}</span> /
+                                                            <small>{{ $detail->barang->kdbrg }}</small>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <small>
+                                                                Rp {{ number_format($detail->barang->harga) }} x
+                                                                {{ $detail->quantity }}
+                                                                {{ $detail->barang->satuan->nmsatuan }}
+                                                            </small>
+                                                            <div class="fw-semibold">
+                                                                Rp {{ number_format($detail->jumlah) }}
+                                                            </div>
+
+                                                        </div>
+                                                    </li>
+                                                    @if ($j++ < count($item->detail))
+                                                        <hr>
+                                                    @endif
                                                 @endforeach
                                             </ul>
                                         </td>
-                                        <td>{{ $item->total }}</td>
-                                        <td class="d-flex gap-2">
-                                            <a href="{{ route('penjualan.edit', $item->id) }}"
-                                                class="btn btn-sm btn-warning">
-                                                Ubah
+                                        <td class="fw-semibold text-center align-middle">Rp
+                                            {{ number_format($item->total) }}</td>
+                                        <td class="text-center align-middle">
+                                            <a href="{{ route('penjualan.show', $item->id) }}"
+                                                class="btn btn-sm btn-warning w-100 mb-2">
+                                                <span class="bi bi-eye-fill"></span>
+                                                Detail
+                                            </a>
+                                            <a href="{{ route('penjualan.bukti-transaksi', $item->id) }}"
+                                                class="btn btn-sm btn-success w-100 mb-2" target="__blank">
+                                                <span class="bi bi-printer-fill"></span>
+                                                Cetak
                                             </a>
                                             <form action="{{ route('penjualan.destroy', $item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
                                                     onclick="return confirm('Yakin ingin menghapus data?')"
-                                                    class="btn btn-sm btn-danger">
+                                                    class="btn btn-sm btn-danger w-100">
+                                                    <span class="bi bi-trash-fill"></span>
                                                     Hapus
                                                 </button>
                                             </form>

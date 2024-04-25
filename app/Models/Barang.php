@@ -17,6 +17,7 @@ class Barang extends Model
         'nmbrg',
         'harga',
         'stock',
+        'terjual',
     ];
 
     public function satuan()

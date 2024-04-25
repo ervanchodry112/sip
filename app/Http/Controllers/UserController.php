@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
@@ -43,7 +44,7 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $data = $request->validated();
-        if(!empty($request->user_foto)){
+        if (!empty($request->user_foto)) {
             $filename = $request->user_foto->store('photos', 'public');
             $data['user_foto'] = url('storage/' . $filename);
         }
@@ -51,16 +52,25 @@ class UserController extends Controller
         $user = new User($data);
 
         DB::beginTransaction();
-        try{
-            if(!$user->saveUser()){
+        try {
+            if (!$user->saveUser()) {
                 throw new Exception('Gagal menambahkan User!');
             }
             DB::commit();
             return to_route('user.index')->with('success', 'Berhasil menambahkan user!');
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             return back()->withInput()->with('error', $e->getMessage());
         }
+    }
+
+    public function show()
+    {
+        $data = [
+            'title' => 'Profile',
+        ];
+
+        return view('pages.profile', $data);
     }
 
     /**
@@ -84,19 +94,19 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if(!empty($request->user_foto)){
+        if (!empty($request->user_foto)) {
             $filename = $request->user_foto->store('photos', 'public');
             $data['user_foto'] = url('storage/' . $filename);
         }
 
         DB::beginTransaction();
-        try{
-            if(!$user->updateUser($data)){
+        try {
+            if (!$user->updateUser($data)) {
                 throw new Exception('Gagal menyimpan data!');
             }
             DB::commit();
-            return to_route('user.index')->with('success', 'Berhasil menyimpan data user');
-        }catch(Exception $e){
+            return back()->with('success', 'Berhasil menyimpan data user');
+        } catch (Exception $e) {
             DB::rollBack();
             return back()->withInput()->with('error', $e->getMessage());
         }
@@ -108,19 +118,20 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         DB::beginTransaction();
-        try{
-            if($user->deleteUser()){
+        try {
+            if ($user->deleteUser()) {
                 throw new Exception('Gagal menghapus user!');
             }
             DB::commit();
             return to_route('user.index')->with('success', 'Berhasil menghapus data user');
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
         }
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $search = "%$request->search%";
         $users = User::where('name', 'like', $search)->get();
         if (empty($users->toArray())) {
@@ -138,4 +149,26 @@ class UserController extends Controller
         return response($response);
     }
 
+    public function change_password(ChangePasswordRequest $request, User $user)
+    {
+        DB::beginTransaction();
+        try {
+            if (!$user->changePassword($request)) {
+                throw new Exception('Gagal mengubah password');
+            }
+            DB::commit();
+            $response = [
+                'status'    => 200,
+                'message'   => 'Berhasil mengubah password!',
+            ];
+            return response($response);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $response = [
+                'status'    => 500,
+                'message'   => $e->getMessage()
+            ];
+            return response($response, 500);
+        }
+    }
 }

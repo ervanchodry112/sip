@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Penjualan;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePenjualanRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class CreatePenjualanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'bayar' => 'required|decimal:0',
-            'kembali'   => 'required|decimal:0'
+            'current_password'  => 'required|current_password',
+            'new_password'      => 'required|confirmed'
         ];
     }
 }

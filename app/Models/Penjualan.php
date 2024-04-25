@@ -15,6 +15,8 @@ class Penjualan extends Model
         'tgl_penjualan',
         'jam_penjualan',
         'total',
+        'bayar',
+        'kembali',
         'created_by'
     ];
 
@@ -26,5 +28,11 @@ class Penjualan extends Model
     public function detail()
     {
         return $this->hasMany(PenjualanDetail::class, 'id_penjualan', 'id');
+    }
+
+    // CRUD
+    public function deletePenjualan()
+    {
+        return $this->delete();
     }
 }

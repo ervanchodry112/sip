@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\UserController;
@@ -13,11 +14,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('pages.dashboard', ['title' => 'Home']);
-    })->name('home');
+    Route::get('/', [DashboardController::class, 'dashboard'])->name('home');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/bukti-transaksi/{penjualan}', [PenjualanController::class, 'bukti_transaksi'])->name('penjualan.bukti-transaksi');
 
     Route::resources([
         'produk'    => BarangController::class,

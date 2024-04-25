@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Penjualan;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class CreatePenjualanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,8 +22,7 @@ class CreatePenjualanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'bayar' => 'required|decimal:0',
-            'kembali'   => 'required|decimal:0'
+            //
         ];
     }
 }

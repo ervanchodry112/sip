@@ -79,36 +79,55 @@ class User extends Authenticatable
         return $this->cart->resetCart();
     }
 
-    public function checkout()
+    public function checkout($bayar, $kembali)
     {
         $data = [
             'tgl_penjualan' => now()->toDateString(),
             'jam_penjualan' => now()->toTimeString(),
             'total'         => $this->cart->subtotal,
+            'bayar'         => $bayar,
+            'kembali'       => $kembali,
         ];
+
         if (!$this->penjualan()->create($data)) {
             throw new Exception('Gagal menyimpan data penjualan');
         }
+
         $this->cart()->update([
             'subtotal'      => 0,
             'total_item'    => 0,
         ]);
+
         $penjualan = $this->penjualan()->orderBy('created_at', 'DESC')->first();
 
-        foreach($this->cart->detail as $detail){
+        foreach ($this->cart->detail as $detail) {
             $data = [
                 'id_barang' => $detail->id_barang,
                 'jumlah'    => $detail->subtotal,
                 'quantity'  => $detail->quantity,
             ];
-            if(!$penjualan->detail()->create($data)){
+            if (!$penjualan->detail()->create($data)) {
                 throw new Exception('Gagal menyimpan data penjualan!');
             }
+            $barang = $detail->barang;
+            $barang->update([
+                'stock'     => $barang->stock - $detail->quantity,
+                'terjual'   => $barang->terjual + $detail->quantity,
+            ]);
         }
-        if(!$this->cart->detail()->delete()){
+        if (!$this->cart->detail()->delete()) {
             throw new Exception('Gagal menyimpan data penjualan!');
         }
         $this->refresh();
         return $penjualan;
+    }
+
+    public function changePassword($request)
+    {
+        $data = [
+            'password'  => bcrypt($request->new_password),
+        ];
+
+        return $this->update($data);
     }
 }

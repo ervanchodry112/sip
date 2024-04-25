@@ -38,7 +38,8 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <small>Stok: {{ $item->stock }} {{ $item->satuan->nmsatuan }}</small>
                                         <button type="button" class="addCartBtn btn btn-primary btn-sm rounded-3"
-                                            onclick="addToCart({{ $item->id }})">
+                                            onclick="addToCart({{ $item->id }})"
+                                            @if ($item->stock <= 0) disabled @endif>
                                             <span class="bi bi-cart-plus"></span>
                                         </button>
                                     </div>
@@ -178,15 +179,21 @@
                 const bayar = $('#bayar').val();
                 if (bayar == '' || bayar == '0') {
                     $('#kembali').val(0);
-                    $('#bayar').val(0);
+                    $('#bayar').val();
                 } else {
                     const kembali = bayar - total;
+                    if (kembali < 0) {
+                        $('#bayar').addClass('is-invalid');
+                        $('#kembali').val(0);
+                        return;
+                    }
+                    $('#bayar').removeClass('is-invalid');
                     $('#kembali').val(kembali);
                 }
             }
 
             $('#btn-bayar').on('click', function() {
-                const total = $('#total').val();
+                const total = parseInt($('#total').val().replace(/,/g, ''));
                 const bayar = $('#bayar').val();
 
                 if (bayar < total) {
@@ -199,6 +206,16 @@
                 }
             });
 
+            function backToBayar() {
+                $('#btn-bayar').removeClass('d-none');
+                $('#btn-checkout').addClass('d-none');
+            }
+
+            $('#bayar').on('keyup', function() {
+                backToBayar();
+                updateKembalian();
+            });
+
             $('#btn-checkout').on('click', function() {
                 $('#btn-checkout').attr('disabled', true);
 
@@ -206,6 +223,10 @@
                     type: 'POST',
                     url: "{{ route('penjualan.checkout') }}",
                     headers: header,
+                    data: {
+                        bayar: $('#bayar').val(),
+                        kembali: $('#kembali').val()
+                    },
                     success: function(res) {
                         console.log(res);
                         if (res.status == 201) {
@@ -219,6 +240,8 @@
             });
 
             $('#reset-button').on('click', function() {
+
+
                 $('#reset-button').attr('disabled', true);
                 if (confirm('Yakin ingin mereset keranjang?')) {
                     $.ajax({
@@ -240,6 +263,8 @@
 
                             $('#cart-wrapper').html(html);
                             $('#total').val(0);
+                            $('#bayar').val(0);
+                            $('#kembali').val(0);
                             updateKembalian();
                         }
                     });
@@ -248,8 +273,8 @@
             });
 
 
-
             function changeQty(id, op = null, override = false) {
+                backToBayar();
                 $('.addQty').attr('disabled', true);
                 $('.subQty').attr('disabled', true);
 
