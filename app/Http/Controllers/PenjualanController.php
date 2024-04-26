@@ -18,7 +18,7 @@ class PenjualanController extends Controller
     {
         $data = [
             'title'     => 'Penjualan',
-            'penjualan' => Penjualan::paginate(25),
+            'penjualan' => Penjualan::orderBy('created_at', 'DESC')->paginate(25),
         ];
 
         return view('pages.penjualan.index', $data);
@@ -137,5 +137,14 @@ class PenjualanController extends Controller
             'penjualan' => $penjualan
         ];
         return view('report.bukti-transaksi', $data);
+    }
+
+    public function report(){
+        $data = [
+            'penjualan' => Penjualan::orderBy('created_at', 'DESC')->get(),
+            'total'     => Penjualan::sum('total'),
+        ];
+
+        return view('report.laporan-penjualan', $data);
     }
 }

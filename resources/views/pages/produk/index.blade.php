@@ -19,6 +19,10 @@
                                 </button>
                             </div>
                             <div>
+                                <a href="{{ route('produk.report') }}" target="__blank" class="btn btn-sm btn-success">
+                                    <span class="bi bi-printer"></span>
+                                    Cetak Laporan
+                                </a>
                                 <a href="{{ route('produk.create') }}" class="btn btn-sm btn-primary">
                                     <span class="bi bi-plus-circle"></span>
                                     Tambah Data

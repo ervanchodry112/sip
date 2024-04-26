@@ -19,6 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/bukti-transaksi/{penjualan}', [PenjualanController::class, 'bukti_transaksi'])->name('penjualan.bukti-transaksi');
+    Route::get('/produk/report', [BarangController::class, 'report'])->name('produk.report');
+    Route::get('/penjualan/report', [PenjualanController::class, 'report'])->name('penjualan.report');
 
     Route::resources([
         'produk'    => BarangController::class,

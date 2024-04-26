@@ -125,4 +125,14 @@ class BarangController extends Controller
 
         return response($response);
     }
+
+    public function report()
+    {
+        $data = [
+            'products'  => Barang::get(),
+            'total'     => 0
+        ];
+
+        return view('report.laporan-produk', $data);
+    }
 }
