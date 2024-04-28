@@ -16,8 +16,8 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name'      => 'Administrator',
             'username'  => 'admin',
-            'password'  => bcrypt('12341234'),
-            'user_leve' => 'admin'
+            'password'  => bcrypt('1234'),
+            'user_level' => 'admin'
         ]);
     }
 }

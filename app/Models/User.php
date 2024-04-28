@@ -82,8 +82,8 @@ class User extends Authenticatable
     public function checkout($bayar, $kembali)
     {
         $data = [
-            'tgl_penjualan' => now()->toDateString(),
-            'jam_penjualan' => now()->toTimeString(),
+            'tgl_penjualan' => now()->timezone('asia/jakarta')->toDateString(),
+            'jam_penjualan' => now()->timezone('asia/jakarta')->toTimeString(),
             'total'         => $this->cart->subtotal,
             'bayar'         => $bayar,
             'kembali'       => $kembali,
@@ -110,8 +110,9 @@ class User extends Authenticatable
                 throw new Exception('Gagal menyimpan data penjualan!');
             }
             $barang = $detail->barang;
+            $stok = $barang->stock - $detail->quantity;
             $barang->update([
-                'stock'     => $barang->stock - $detail->quantity,
+                'stock'     => $stok < 0 ? 0 : $stok,
                 'terjual'   => $barang->terjual + $detail->quantity,
             ]);
         }

@@ -7,45 +7,36 @@
                 <i class="bi bi-house-door"></i>
                 <span>Home</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
+
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#master-data" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-database"></i><span>Master Data</span><i class="bi bi-chevron-down ms-auto"></i>
+            <a class="nav-link collapsed" href="{{ route('produk.index') }}">
+                <i class="bi bi-basket"></i>
+                <span>Produk</span>
             </a>
-            <ul id="master-data" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('produk.index') }}">
-                        <i class="bi bi-circle"></i><span>Produk</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('satuan.index') }}">
-                        <i class="bi bi-circle"></i><span>Satuan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('user.index') }}">
-                        <i class="bi bi-circle"></i><span>Users</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Components Nav -->
+        </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{ route('satuan.index') }}">
                 <i class="bi bi-cart-fill"></i>
-                <span>Pembayaran</span>
+                <span>Satuan</span>
             </a>
-        </li><!-- End Profile Page Nav -->
+        </li>
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('user.index') }}">
+                <i class="bi bi-people-fill"></i>
+                <span>Users</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('penjualan.index') }}">
                 <i class="bi bi-table"></i>
                 <span>Penjualan</span>
             </a>
-        </li><!-- End Profile Page Nav -->
+        </li>
 
     </ul>
 

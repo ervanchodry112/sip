@@ -36,8 +36,8 @@
                                     <th>
                                         No.
                                     </th>
-                                    <th>Kode Barang</th>
-                                    <th>Nama Barang</th>
+                                    <th>Kode Produk</th>
+                                    <th>Nama Produk</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
                                     <th>Aksi</th>

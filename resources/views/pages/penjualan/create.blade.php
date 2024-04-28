@@ -352,7 +352,7 @@
                                                 </button>
                                                 <input type="number" class="form-control form-control-sm text-center"
                                                     style="width: 15%;" name="qty" id="${element.id}-qty"
-                                                    value="${element.quantity}">
+                                                    onchange="changeQty(${element.id}, null, true)" value="${element.quantity}">
                                                 <button type="button" class="addQty btn btn-primary btn-sm rounded-3" onclick="changeQty(${element.id}, '+')">
                                                     <span class="bi bi-plus"></span>
                                                 </button>
@@ -405,7 +405,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <small>Stok: ${element.stock} ${element.satuan.nmsatuan}</small>
-                                            <button type="button" class="btn btn-primary btn-sm rounded-3">
+                                            <button type="button" class="btn btn-primary btn-sm rounded-3" onclick="addToCart(${element.id})">
                                                 <span class="bi bi-cart-plus"></span>
                                             </button>
                                         </div>
