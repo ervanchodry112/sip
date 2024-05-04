@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/cart', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/change/', [CartController::class, 'change'])->name('cart.change');
     Route::post('/cart/change/{detail}', [CartController::class, 'change']);
+    Route::delete('/cart', [CartController::class, 'delete'])->name('cart.delete');
+    Route::delete('/cart/{detail}', [CartController::class, 'delete']);
     Route::delete('/cart/reset', [CartController::class, 'reset'])->name('cart.reset');
     Route::post('/penjualan/checkout', [PenjualanController::class, 'store'])->name('penjualan.checkout');
     Route::put('/user/change-password/{user}', [UserController::class, 'change_password'])->name('user.change_password');

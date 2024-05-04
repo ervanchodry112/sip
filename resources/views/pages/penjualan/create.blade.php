@@ -13,17 +13,28 @@
 @section('content')
     <section class="section">
         <div class="row">
-            <div class="col-lg-5">
+            <div class="col-lg-4">
                 <div class="card pb-4">
                     <div class="card-body">
-                        <div class="card-title">Daftar Produk</div>
-                        <div class="d-flex align-items-center gap-3 mb-3 w-75">
+                        <div class="card-title">Cari Produk</div>
+                        <div class="d-flex align-items-center gap-3 w-100">
                             <input type="search" class="form-control" name="search" id="search" placeholder="Search">
-                            <button type="button" id="btn-search" class="btn btn-primary">
+                            {{-- <button type="button" id="btn-search" class="btn btn-primary">
                                 <span class="bi bi-search"></span>
-                            </button>
+                            </button> --}}
                         </div>
-                        <div id="product-wrapper" class="w-100 overflow-y-auto" style="height: 65vh;">
+
+                    </div>
+                </div>
+            </div>
+            @php
+                $total = 0;
+            @endphp
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">Daftar Produk</div>
+                        <div id="product-wrapper" class="w-100 overflow-y-auto" style="height: 35vh;">
                             @forelse ($products as $item)
                                 <div class="border rounded-3 p-3 mb-2">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -58,114 +69,136 @@
                     </div>
                 </div>
             </div>
-            @php
-                $total = 0;
-            @endphp
-            <div class="col-lg-7">
+        </div>
+
+        {{-- Keranjang --}}
+        <div class="row">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Keranjang</div>
-                        <div class="mb-3" id="cart-wrapper" style="height: 60%;">
-                            @forelse ($carts as $cart)
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>Tanggal</td>
+                                <td>
+                                    <input type="text" class="form-control"
+                                        value="{{ now()->timezone('asia/jakarta')->locale('id_ID')->isoFormat('D MMMM Y, HH:mm') }}"
+                                        disabled>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Barang</th>
+                                    <th style="width: 20%;">Jumlah</th>
+                                    <th>Total</th>
+                                    <th>Kasir</th>
+                                    <th style="width: fit-content;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-wrapper">
                                 @php
-                                    $total += $cart->subtotal;
+                                    $i = 1;
+                                    $total = 0;
                                 @endphp
-                                <div class="border rounded-3 p-3 mb-2">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <label for="{{ $cart->id }}-qty">
-                                            <h5>
-                                                <span class="fs-5 fw-bold">{{ $cart->barang->nmbrg }}</span>
-                                                <span class="fs-6">/ {{ $cart->barang->kdbrg }}</span>
-                                            </h5>
-                                        </label>
-                                        <div id="{{ $cart->id }}-subtotal" class="fw-semibold">Rp
-                                            {{ number_format($cart->subtotal) }}</div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <small>Stok: {{ $cart->barang->stock }}
-                                            {{ $cart->barang->satuan->nmsatuan }}</small>
-                                        <div class="d-flex justify-content-end gap-2">
-                                            <button type="button" class="subQty btn btn-primary btn-sm rounded-3"
-                                                onclick="changeQty({{ $cart->id }}, '-')">
-                                                <span class="bi bi-dash"></span>
+                                @forelse ($carts as $cart)
+                                    @php
+                                        $total += $cart->subtotal;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $cart->barang->nmbrg }}</td>
+                                        <td class="d-flex align-items-center gap-2">
+                                            <input type="number" class="form-control" name="{{ $cart->id }}-qty"
+                                                id="{{ $cart->id }}-qty" value="{{ $cart->quantity }}" min="0">
+                                            {{ $cart->barang->satuan->nmsatuan }}
+                                        </td>
+                                        <td class="">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>Rp</div>
+                                                <div class="ms-auto" id="{{ $cart->id }}-subtotal">
+                                                    {{ number_format($cart->subtotal) }}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ $cart->cart->user->name }}
+                                        </td>
+                                        <td>
+                                            <button type="button" onclick="changeQty({{ $cart->id }}, null, true)"
+                                                class="btn btn-sm btn-warning text-white">Update</button>
+                                            <button type="button" class="btn btn-sm btn-danger text-white"
+                                                onclick="deleteItem({{ $cart->id }})">
+                                                <i class="bi bi-x"></i>
                                             </button>
-                                            <input type="number" class="form-control form-control-sm text-center"
-                                                style="width: 15%;" name="qty" id="{{ $cart->id }}-qty"
-                                                value="{{ $cart->quantity }}"
-                                                onchange="changeQty({{ $cart->id }}, null, true)">
-                                            <button type="button" class="addQty btn btn-primary btn-sm rounded-3"
-                                                onclick="changeQty({{ $cart->id }}, '+')">
-                                                <span class="bi bi-plus"></span>
-                                            </button>
-                                        </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6">
+                                            <div
+                                                class="text-secondary d-flex flex-column justify-content-center align-items-center h-100">
+                                                <div>
+                                                    <span class="bi bi-box2-fill fs-1"></span>
+                                                </div>
+                                                <div class="fw-semibold fs-4">Keranjang masih kosong!</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        <hr>
+                        <table class="table align-middle">
+                            <tr>
+                                <td>Total</td>
+                                <td>
+                                    <div class="input-group w-100" style="width: 40%">
+                                        <div class="input-group-text">Rp</div>
+                                        <input type="text" class="form-control" id="total"
+                                            value="{{ number_format($total) }}" readonly>
                                     </div>
-                                </div>
-                            @empty
-                                <div
-                                    class="text-secondary d-flex flex-column justify-content-center align-items-center h-100">
-                                    <div>
-                                        <span class="bi bi-box2-fill fs-1"></span>
+                                </td>
+                                <td>Bayar</td>
+                                <td>
+                                    <div class="input-group w-100" style="width: 40%">
+                                        <div class="input-group-text">Rp</div>
+                                        <input type="text" class="form-control" id="bayar" value="0"
+                                            min="0">
+                                        <div class="invalid-feedback">Pembayaran tidak mencukupi!</div>
                                     </div>
-                                    <div class="fw-semibold fs-4">Keranjang masih kosong!</div>
-                                </div>
-                            @endforelse
-                        </div>
-                        <div class="mb-2">
-                            <div class="row mb-2">
-                                <div class="col-3">Tanggal/Waktu </div>
-                                <div class="col-3">:</div>
-                                <div id="date" class="col-6 text-end">
-                                    {{ now()->timezone('asia/jakarta')->locale('id_ID')->isoFormat('D MMMM Y, HH:mm') }}
-                                    WIB
-                                </div>
-                            </div>
-                            <div class="row mb-1">
-                                <div class="col-3">Total </div>
-                                <div class="col-4">:</div>
-                                <div class="input-group col-4" style="width: 40%">
-                                    <div class="input-group-text">Rp</div>
-                                    <input type="text" class="form-control" id="total"
-                                        value="{{ number_format($total) }}" readonly>
-                                </div>
-                            </div>
-                            <div class="row mb-1">
-                                <div class="col-3">Bayar </div>
-                                <div class="col-4">:</div>
-                                <div class="input-group col-4" style="width: 40%">
-                                    <div class="input-group-text">Rp</div>
-                                    <input type="text" class="form-control" id="bayar" value="0">
-                                    <div class="invalid-feedback">Pembayaran tidak mencukupi!</div>
-                                </div>
-                            </div>
-                            <div class="row mb-1">
-                                <div class="col-3">Kembali </div>
-                                <div class="col-4">:</div>
-                                <div class="input-group col-4" style="width: 40%">
-                                    <div class="input-group-text">Rp</div>
-                                    <input type="text" class="form-control" id="kembali" value="0" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <button type="button" id="btn-bayar" class="btn btn-primary bg-gradient">Bayar</button>
-                            <button type="button" id="btn-checkout"
-                                class="d-none btn btn-primary bg-gradient">Simpan</button>
-                            <a href="{{ route('penjualan.index') }}" class="btn btn-outline-secondary">Batal</a>
-                            <button type="button" class="btn btn-danger bg-gradient" id="reset-button">
-                                Reset Keranjang
-                            </button>
-                        </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+
+                                        <button id="btn-checkout" class="btn btn-success text-nowrap" disabled>
+                                            <span class="bi bi-cart-fill"></span>
+                                            Bayar
+                                        </button>
+                                        <button type="button" class="btn btn-danger bg-gradient text-nowrap"
+                                            id="reset-button">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Kembali</td>
+                                <td>
+                                    <div class="input-group w-100" style="width: 40%">
+                                        <div class="input-group-text">Rp</div>
+                                        <input type="text" class="form-control" id="kembali" value="0" readonly>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </table>
+
                     </div>
                 </div>
             </div>
         </div>
-        {{-- <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body"></div>
-                    </div>
-                </div>
-            </div> --}}
     </section>
     @push('scripts')
         <script>
@@ -185,34 +218,16 @@
                     if (kembali < 0) {
                         $('#bayar').addClass('is-invalid');
                         $('#kembali').val(0);
+                        $('btn-checkout').attr('disabled', true);
                         return;
                     }
+                    $('#btn-checkout').attr('disabled', false);
                     $('#bayar').removeClass('is-invalid');
                     $('#kembali').val(kembali);
                 }
             }
 
-            $('#btn-bayar').on('click', function() {
-                const total = parseInt($('#total').val().replace(/,/g, ''));
-                const bayar = $('#bayar').val();
-
-                if (bayar < total) {
-                    $('#bayar').addClass('is-invalid');
-                } else {
-                    $('#bayar').removeClass('is-invalid');
-                    updateKembalian();
-                    $('#btn-checkout').removeClass('d-none');
-                    $('#btn-bayar').addClass('d-none');
-                }
-            });
-
-            function backToBayar() {
-                $('#btn-bayar').removeClass('d-none');
-                $('#btn-checkout').addClass('d-none');
-            }
-
             $('#bayar').on('keyup', function() {
-                backToBayar();
                 updateKembalian();
             });
 
@@ -272,11 +287,73 @@
                 $('#reset-button').attr('disabled', false);
             });
 
+            function deleteItem(id) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: `{{ route('cart.delete') }}/${id}`,
+                    headers: header,
+                    data: {
+                        id_detail: id,
+                    },
+                    success: function(result) {
+
+                        let i = 1;
+                        let html = '';
+                        if (result.status != 200) {
+                            alert(result.message)
+                        } else {
+                            if (result.data.detail.length <= 0) {
+                                html += ` <tr>
+                                        <td colspan="6">
+                                            <div
+                                                class="text-secondary d-flex flex-column justify-content-center align-items-center h-100">
+                                                <div>
+                                                    <span class="bi bi-box2-fill fs-1"></span>
+                                                </div>
+                                                <div class="fw-semibold fs-4">Keranjang masih kosong!</div>
+                                            </div>
+                                        </td>
+                                    </tr>`;
+                            } else {
+                                result.data.detail.forEach(element => {
+
+                                    html += `<tr>
+                                        <td>${i++}</td>
+                                        <td>${element.barang.nmbrg}</td>
+                                        <td class="d-flex align-items-center gap-2">
+                                            <input type="number" class="form-control" name="${element.id}-qty"
+                                                onchange="changeQty(${element.id}, null, true)"
+                                                id="${element.id}-qty" value="${element.quantity}">
+                                            ${element.barang.satuan.nmsatuan}
+                                        </td>
+                                        <td class="">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>Rp</div>
+                                                <div class="ms-auto">${element.subtotal}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            ${result.data.user.name}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning text-white" onclick="changeQty(${element.id}, null, true)">Update</button>
+                                            <button type="button" class="btn btn-sm btn-danger text-white" onclick="deleteItem(${element.id})">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </td>
+                                    </tr>`;
+                                });
+                            }
+                        }
+                        updateKembalian();
+                        $('#total').val(nf.format(result.data.subtotal));
+                        $('#cart-wrapper').html(html);
+                    },
+                });
+            }
+
 
             function changeQty(id, op = null, override = false) {
-                backToBayar();
-                $('.addQty').attr('disabled', true);
-                $('.subQty').attr('disabled', true);
 
                 let qty = null
                 if (override) {
@@ -292,17 +369,60 @@
                         quantity: qty,
                     },
                     success: function(result) {
-                        const subtotal = result.data.subtotal;
-                        const qty = result.data.quantity;
-                        const cartSubtotal = result.data.cart.subtotal;
 
-                        $('#total').val(nf.format(cartSubtotal));
-                        $(`#${id}-subtotal`).html(`Rp ${nf.format(subtotal)}`);
-                        $(`#${id}-qty`).val(qty);
+                        let i = 1;
+                        let html = '';
+                        if (result.status != 200) {
+                            alert(result.message)
+                        } else {
+                            if (result.data.detail.length <= 0) {
+                                html += ` <tr>
+                                        <td colspan="6">
+                                            <div
+                                                class="text-secondary d-flex flex-column justify-content-center align-items-center h-100">
+                                                <div>
+                                                    <span class="bi bi-box2-fill fs-1"></span>
+                                                </div>
+                                                <div class="fw-semibold fs-4">Keranjang masih kosong!</div>
+                                            </div>
+                                        </td>
+                                    </tr>`;
+                            } else {
+                                result.data.detail.forEach(element => {
+
+                                    html += `<tr>
+                                        <td>${i++}</td>
+                                        <td>${element.barang.nmbrg}</td>
+                                        <td class="d-flex align-items-center gap-2">
+                                            <input type="number" class="form-control" name="${element.id}-qty"
+                                                onchange="changeQty(${element.id}, null, true)"
+                                                id="${element.id}-qty" value="${element.quantity}">
+                                            ${element.barang.satuan.nmsatuan}
+                                        </td>
+                                        <td class="">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>Rp</div>
+                                                <div class="ms-auto">${element.subtotal}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            ${result.data.user.name}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning text-white" onclick="changeQty(${element.id}, null, true)">Update</button>
+                                            <button type="button" class="btn btn-sm btn-danger text-white" onclick="deleteItem(${element.id})">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </td>
+                                    </tr>`;
+                                });
+                            }
+                        }
+                        $('#total').val(nf.format(result.data.subtotal));
+                        $('#cart-wrapper').html(html);
                         updateKembalian();
                     },
                 });
-
 
                 $('.addQty').attr('disabled', false);
                 $('.subQty').attr('disabled', false);
@@ -323,43 +443,53 @@
                         id_barang: id
                     },
                     success: function(result) {
+
+                        let i = 1;
                         let html = '';
                         if (result.status != 201) {
-                            html += `<div class="text-secondary d-flex flex-column justify-content-center align-items-center h-100">
-                                        <div>
-                                            <span class="bi bi-box2-fill fs-1"></span>
-                                        </div>
-                                        <div class="fw-semibold fs-4">Keranjang masih kosong!</div>
-                                    </div>`;
+                            alert(result.message);
                         } else {
-                            result.data.detail.forEach(element => {
-                                html += `<div class="border rounded-3 p-3 mb-2">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <label for="${element.id}-qty">
-                                                <h5>
-                                                    <span class="fs-5 fw-bold">${element.barang.nmbrg}</span>
-                                                    <span class="fs-6">/ ${element.barang.kdbrg}</span>
-                                                </h5>
-                                            </label>
-                                            <span class="fw-semibold">Rp ${nf.format(element.subtotal)}</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <small>Stok: ${element.barang.stock}
-                                                ${element.barang.satuan.nmsatuan}</small>
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <button type="button" class="subQty btn btn-primary btn-sm rounded-3" onclick="changeQty(${element.id}, '-')">
-                                                    <span class="bi bi-dash"></span>
-                                                </button>
-                                                <input type="number" class="form-control form-control-sm text-center"
-                                                    style="width: 15%;" name="qty" id="${element.id}-qty"
-                                                    onchange="changeQty(${element.id}, null, true)" value="${element.quantity}">
-                                                <button type="button" class="addQty btn btn-primary btn-sm rounded-3" onclick="changeQty(${element.id}, '+')">
-                                                    <span class="bi bi-plus"></span>
-                                                </button>
+                            if (result.data.length <= 0) {
+                                html += ` <tr>
+                                        <td colspan="6">
+                                            <div
+                                                class="text-secondary d-flex flex-column justify-content-center align-items-center h-100">
+                                                <div>
+                                                    <span class="bi bi-box2-fill fs-1"></span>
+                                                </div>
+                                                <div class="fw-semibold fs-4">Keranjang masih kosong!</div>
                                             </div>
-                                        </div>
-                                    </div>`;
-                            });
+                                        </td>
+                                    </tr>`;
+                            } else {
+                                result.data.detail.forEach(element => {
+                                    html += `<tr>
+                                        <td>${i++}</td>
+                                        <td>${element.barang.nmbrg}</td>
+                                        <td class="d-flex align-items-center gap-2">
+                                            <input type="number" class="form-control" name="${element.id}-qty"
+                                                onchange="changeQty(${element.id}, null, true)"
+                                                id="${element.id}-qty" value="${element.quantity}">
+                                            ${element.barang.satuan.nmsatuan}
+                                        </td>
+                                        <td class="">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>Rp</div>
+                                                <div class="ms-auto">${element.subtotal}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            ${result.data.user.name}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning text-white" onclick="changeQty(${element.id}, null, true)">Update</button>
+                                            <button type="button" class="btn btn-sm btn-danger text-white" onclick="deleteItem(${element.id})">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </td>
+                                    </tr>`;
+                                });
+                            }
                         }
                         updateKembalian();
                         $('#total').val(nf.format(result.data.subtotal));
@@ -370,7 +500,7 @@
                 $('.addCartBtn').attr('disabled', false);
             }
 
-            $('#btn-search').on('click', () => {
+            $('#search').on('change', () => {
                 $('#product-wrapper').html(`<div class="text-secondary d-flex flex-column justify-content-center align-items-center h-100">
                                         <div class="spinner-border" role="status">
                                             <span class="visually-hidden">Loading...</span>

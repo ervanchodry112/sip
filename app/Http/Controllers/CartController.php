@@ -58,7 +58,7 @@ class CartController extends Controller
 
             $response = [
                 'status'    => 201,
-                'data'      => $user->cart()->with('detail.barang.satuan')->first()->toArray(),
+                'data'      => $user->cart()->with('detail.barang.satuan')->with('user')->first()->toArray(),
             ];
             DB::commit();
             return response($response, 201);
@@ -78,7 +78,7 @@ class CartController extends Controller
         $operator = $request->operator;
         $quantity = $detail->quantity;
 
-        if (!empty($request->quantity)) {
+        if (!empty($request->quantity) || $request->quantity <= 0) {
             $qty = $request->quantity;
         } else {
             if ($operator == '+') {
@@ -87,8 +87,7 @@ class CartController extends Controller
                 $qty = $quantity - 1;
             }
         }
-
-        if($qty > $detail->barang->stock){
+        if ($qty > $detail->barang->stock) {
             $qty = $detail->barang->stock;
         }
 
@@ -110,10 +109,9 @@ class CartController extends Controller
 
             DB::commit();
             $user->refresh();
-            $detail->refresh();
             $response = [
                 'status'    => 200,
-                'data'      => $detail->with('cart')->find($detail->id)->toArray(),
+                'data'      => $user->cart()->with('detail.barang.satuan')->with('user')->first()->toArray(),
             ];
             return response($response);
         } catch (Exception $e) {
@@ -151,4 +149,35 @@ class CartController extends Controller
         }
     }
 
+    public function delete(Request $request, CartDetail $detail)
+    {
+        $user = $request->user();
+        DB::beginTransaction();
+        try {
+            if (!$detail->deleteCartItem()) {
+                throw new Exception('Gagal menghapus data!');
+            }
+
+            $updateCart = $user->cart()->withSum('detail as subtotal', 'subtotal')->withSum('detail as total_item', 'quantity')->first()->toArray();
+
+            if (!$user->cart->updateCart($updateCart)) {
+                throw new Exception('Gagal menyimpan data!');
+            }
+
+            DB::commit();
+            $user->refresh();
+            $response = [
+                'status'    => 200,
+                'data'      => $user->cart()->with('detail.barang.satuan')->with('user')->first()->toArray(),
+            ];
+            return response($response);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $response = [
+                'status'    => 500,
+                'message'   => $e->getMessage(),
+            ];
+            return response($response, 500);
+        }
+    }
 }

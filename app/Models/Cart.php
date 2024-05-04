@@ -22,15 +22,20 @@ class Cart extends Model
         return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
-    public function detail(){
+    public function detail()
+    {
         return $this->hasMany(CartDetail::class, 'id_cart', 'id');
     }
 
-    public function updateCart($data){
+    public function updateCart($data)
+    {
+        $data['subtotal'] = $data['subtotal'] ?? 0;
+        $data['total_item'] = $data['total_item'] ?? 0;
         return $this->update($data);
     }
 
-    public function resetCart(){
+    public function resetCart()
+    {
         return $this->detail()->delete();
     }
 }

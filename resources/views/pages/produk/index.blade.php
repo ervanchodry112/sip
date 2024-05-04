@@ -52,7 +52,10 @@
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $item->kdbrg }}</td>
                                         <td>{{ $item->nmbrg }}</td>
-                                        <td>{{ $item->harga }}</td>
+                                        <td class="d-flex justify-content-between">
+                                            <div>Rp </div>
+                                            <div>{{ number_format($item->harga) }}</div>
+                                        </td>
                                         <td>{{ $item->stock }} {{ $item->satuan->nmsatuan }}</td>
                                         <td class="d-flex gap-2">
                                             <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-sm btn-warning">

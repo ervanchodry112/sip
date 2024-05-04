@@ -30,6 +30,13 @@ class CartDetail extends Model
 
     // CRUD
     public function updateQty($data){
+        if($data['quantity'] <= 0){
+            return $this->deleteCartItem();
+        }
         return $this->update($data);
+    }
+
+    public function deleteCartItem(){
+        return $this->delete();
     }
 }
