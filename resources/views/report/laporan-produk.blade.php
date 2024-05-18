@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Produk | {{ now()->isoFormat('D MMMM Y') }}</title>
+    <title>Laporan Barang | {{ now()->isoFormat('D MMMM Y') }}</title>
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
         rel="stylesheet">
@@ -31,8 +31,8 @@
             <thead class="table-secondary">
                 <tr class="text-center">
                     <th class="text-start" style="width: 5%">No.</th>
-                    <th>Kode Produk</th>
-                    <th>Nama Produk</th>
+                    <th>Kode Barang</th>
+                    <th>Nama Barang</th>
                     <th>Harga</th>
                     <th>Terjual</th>
                     <th>Total</th>

@@ -38,7 +38,7 @@
                                     </th>
                                     <th class="text-center" style="width: 15%;">Tgl</th>
                                     <th class="text-center" style="width: 10%">Waktu</th>
-                                    <th class="text-center" style="width: 45%;">Produk</th>
+                                    <th class="text-center" style="width: 45%;">Barang</th>
                                     <th class="text-center" style="width: 15%;">Total</th>
                                     <th class="text-center" style="width: 10%;">Aksi</th>
                                 </tr>

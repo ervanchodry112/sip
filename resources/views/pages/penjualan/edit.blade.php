@@ -6,7 +6,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Ubah Data Produk</div>
+                        <div class="card-title">Ubah Data Barang</div>
                         <x-session-alert />
                         <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf

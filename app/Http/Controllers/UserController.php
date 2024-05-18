@@ -119,7 +119,7 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-            if ($user->deleteUser()) {
+            if (!$user->deleteUser()) {
                 throw new Exception('Gagal menghapus user!');
             }
             DB::commit();

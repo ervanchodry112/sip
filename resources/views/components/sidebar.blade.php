@@ -13,7 +13,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('produk.index') }}">
                 <i class="bi bi-basket"></i>
-                <span>Produk</span>
+                <span>Barang</span>
             </a>
         </li>
 

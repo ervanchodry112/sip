@@ -59,8 +59,8 @@
                                     <th style="width: 5%">
                                         No.
                                     </th>
-                                    <th class="text-center">Kode Produk</th>
-                                    <th class="text-center">Nama Produk</th>
+                                    <th class="text-center">Kode Barang</th>
+                                    <th class="text-center">Nama Barang</th>
                                     <th class="text-center">Harga</th>
                                     <th class="text-center">Jumlah</th>
                                     <th class="text-center">Total</th>

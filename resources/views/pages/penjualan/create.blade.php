@@ -16,7 +16,7 @@
             <div class="col-lg-4">
                 <div class="card pb-4">
                     <div class="card-body">
-                        <div class="card-title">Cari Produk</div>
+                        <div class="card-title">Cari Barang</div>
                         <div class="d-flex align-items-center gap-3 w-100">
                             <input type="search" class="form-control" name="search" id="search" placeholder="Search">
                             {{-- <button type="button" id="btn-search" class="btn btn-primary">
@@ -33,7 +33,7 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Daftar Produk</div>
+                        <div class="card-title">Daftar Barang</div>
                         <div id="product-wrapper" class="w-100 overflow-y-auto" style="height: 35vh;">
                             @forelse ($products as $item)
                                 <div class="border rounded-3 p-3 mb-2">
@@ -51,7 +51,7 @@
                                         <button type="button" class="addCartBtn btn btn-primary btn-sm rounded-3"
                                             onclick="addToCart({{ $item->id }})"
                                             @if ($item->stock <= 0) disabled @endif>
-                                            <span class="bi bi-cart-plus"></span>
+                                            Tambah
                                         </button>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@
                                     <div>
                                         <span class="bi bi-exclamation-triangle fs-1"></span>
                                     </div>
-                                    <div class="fw-semibold fs-4">Produk tidak ditemukan</div>
+                                    <div class="fw-semibold fs-4">Barang tidak ditemukan</div>
                                 </div>
                             @endforelse
 
@@ -508,7 +508,7 @@
                                     </div>`)
                 $('#btn-search').attr('disabled', true);
                 $.ajax({
-                    url: "{{ route('penjualan.searchProduk') }}",
+                    url: "{{ route('penjualan.searchBarang') }}",
                     data: {
                         search: $('#search').val(),
                     },
@@ -519,7 +519,7 @@
                                         <div>
                                             <span class="bi bi-exclamation-triangle fs-1"></span>
                                         </div>
-                                        <div class="fw-semibold fs-4">Produk tidak ditemukan</div>
+                                        <div class="fw-semibold fs-4">Barang tidak ditemukan</div>
                                     </div>`;
                         } else {
                             result.data.forEach(element => {

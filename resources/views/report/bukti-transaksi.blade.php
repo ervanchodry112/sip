@@ -38,8 +38,8 @@
             <thead class="table-secondary">
                 <tr class="text-center">
                     <th class="text-start" style="width: 5%">No.</th>
-                    <th>Kode Produk</th>
-                    <th>Nama Produk</th>
+                    <th>Kode Barang</th>
+                    <th>Nama Barang</th>
                     <th>Jumlah</th>
                     <th>Total</th>
                 </tr>

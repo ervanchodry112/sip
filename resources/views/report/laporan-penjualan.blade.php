@@ -32,7 +32,7 @@
                     <th class="text-start" style="width: 5%">No.</th>
                     <th>Tanggal</th>
                     <th>Waktu</th>
-                    <th>Produk</th>
+                    <th>Barang</th>
                     <th>Total</th>
                 </tr>
             </thead>

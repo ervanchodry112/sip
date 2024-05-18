@@ -74,6 +74,29 @@ class User extends Authenticatable
         return $this->update($data);
     }
 
+    public function deleteUser()
+    {
+        if (!empty($this->penjualan->toArray())) {
+            foreach ($this->penjualan as $penjualan) {
+                foreach($penjualan->detail as $detail){
+                    $detail->delete();
+                }
+                $penjualan->delete();
+            }
+        }
+
+        if (!empty($this->cart->detail->toArray())) {
+            foreach ($this->cart->detail as $detail) {
+                $detail->delete();
+            }
+        }
+        if (!$this->cart->delete()) {
+            return false;
+        }
+
+        return $this->delete();
+    }
+
     public function resetCart()
     {
         return $this->cart->resetCart();

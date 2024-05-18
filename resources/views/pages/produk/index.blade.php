@@ -9,7 +9,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Produk</h5>
+                        <h5 class="card-title">Barang</h5>
                         <div class="d-flex justify-content-between mb-3">
                             <div class="d-flex gap-3">
                                 <input type="search" id="search-input" class="form-control" name="search" id="search"
@@ -36,8 +36,8 @@
                                     <th>
                                         No.
                                     </th>
-                                    <th>Kode Produk</th>
-                                    <th>Nama Produk</th>
+                                    <th>Kode Barang</th>
+                                    <th>Nama Barang</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
                                     <th>Aksi</th>
@@ -52,24 +52,30 @@
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $item->kdbrg }}</td>
                                         <td>{{ $item->nmbrg }}</td>
-                                        <td class="d-flex justify-content-between">
-                                            <div>Rp </div>
-                                            <div>{{ number_format($item->harga) }}</div>
+                                        <td>
+                                            <div class="d-flex justify-content-between">
+                                                <div>Rp </div>
+                                                <div>{{ number_format($item->harga) }}</div>
+                                            </div>
                                         </td>
                                         <td>{{ $item->stock }} {{ $item->satuan->nmsatuan }}</td>
-                                        <td class="d-flex gap-2">
-                                            <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-sm btn-warning">
-                                                Ubah
-                                            </a>
-                                            <form action="{{ route('produk.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    onclick="return confirm('Yakin ingin menghapus data?')"
-                                                    class="btn btn-sm btn-danger">
-                                                    Hapus
-                                                </button>
-                                            </form>
+                                        <td>
+                                            <div class="d-flex gap-2">
+
+                                                <a href="{{ route('produk.edit', $item->id) }}"
+                                                    class="btn btn-sm btn-warning">
+                                                    Ubah
+                                                </a>
+                                                <form action="{{ route('produk.destroy', $item->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        onclick="return confirm('Yakin ingin menghapus data?')"
+                                                        class="btn btn-sm btn-danger">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty

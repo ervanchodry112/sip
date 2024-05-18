@@ -17,7 +17,7 @@ Route::get('/satuan', [SatuanController::class, 'search'])->name('satuan.search'
 Route::get('/produk', [BarangController::class, 'search'])->name('produk.search');
 Route::get('/user', [UserController::class, 'search'])->name('user.search');
 Route::get('/penjualan', [PenjualanController::class, 'search'])->name('penjualan.search');
-Route::get('/penjualan/produk', [PenjualanController::class, 'searchProduk'])->name('penjualan.searchProduk');
+Route::get('/penjualan/produk', [PenjualanController::class, 'searchProduk'])->name('penjualan.searchBarang');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/cart', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/change/', [CartController::class, 'change'])->name('cart.change');

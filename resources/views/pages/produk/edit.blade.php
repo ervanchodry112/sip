@@ -6,14 +6,14 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title">Ubah Data Produk</div>
+                        <div class="card-title">Ubah Data Barang</div>
                         <x-session-alert />
                         <form action="{{ route('produk.update', $product->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" value="{{ old('id') ?? $product->id }}">
                             <div class="mb-3">
-                                <label for="kdbrg" class="form-label">Kode Produk<span
+                                <label for="kdbrg" class="form-label">Kode Barang<span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('kdbrg') is-invalid @enderror"
                                     name="kdbrg" id="kdbrg" value="{{ old('kdbrg') ?? $product->kdbrg }}" required>
@@ -22,7 +22,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="nmbrg" class="form-label">Nama Produk<span
+                                <label for="nmbrg" class="form-label">Nama Barang<span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('nmbrg') is-invalid @enderror"
                                     name="nmbrg" id="nmbrg" value="{{ old('nmbrg') ?? $product->nmbrg }}" required>
@@ -31,7 +31,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="harga" class="form-label">Harga Produk<span
+                                <label for="harga" class="form-label">Harga Barang<span
                                         class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp</span>
@@ -46,7 +46,7 @@
 
                             <div class="row mb-3">
                                 <div class="col-lg-6">
-                                    <label for="stock" class="form-label">Stok Produk<span
+                                    <label for="stock" class="form-label">Stok Barang<span
                                             class="text-danger">*</span></label>
                                     <input type="number" class="form-control @error('stock') is-invalid @enderror"
                                         name="stock" id="stock" value="{{ old('stock') ?? $product->stock }}"

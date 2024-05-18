@@ -46,7 +46,7 @@
                         <div class="card info-card revenue-card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title">Data Produk</h5>
+                                    <h5 class="card-title">Data Barang</h5>
                                     <a href="{{ route('produk.index') }}">
                                         <span>Detail</span>
                                         <span class="bi bi-arrow-right"></span>
