@@ -10,20 +10,19 @@
                         <form action="{{ route('produk.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="kdbrg" class="form-label">Kode Barang<span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('kdbrg') is-invalid @enderror"
-                                    name="kdbrg" id="kdbrg" value="{{ old('kdbrg') }}" required>
-                                @error('kdbrg')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
                                 <label for="nmbrg" class="form-label">Nama Barang<span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('nmbrg') is-invalid @enderror"
                                     name="nmbrg" id="nmbrg" value="{{ old('nmbrg') }}" required>
                                 @error('nmbrg')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="kdbrg" class="form-label">Kode Barang</label>
+                                <input type="text" class="form-control @error('kdbrg') is-invalid @enderror"
+                                    name="kdbrg" id="kdbrg" value="{{ old('kdbrg') }}">
+                                @error('kdbrg')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

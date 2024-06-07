@@ -46,9 +46,9 @@
                                     <td>{{ $penjualan->detail()->count() }} Jenis</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-primary text-opacity-50 fw-semibold" style="width: 50%">Total Barang
+                                    <td class="text-primary text-opacity-50 fw-semibold" style="width: 50%">Nomor Transaksi
                                     </td>
-                                    <td>{{ $penjualan->detail()->sum('quantity') }}</td>
+                                    <td>{{ $penjualan->nomor_transaksi }}</td>
                                 </tr>
                             </table>
                         </div>

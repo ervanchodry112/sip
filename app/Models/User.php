@@ -78,7 +78,7 @@ class User extends Authenticatable
     {
         if (!empty($this->penjualan->toArray())) {
             foreach ($this->penjualan as $penjualan) {
-                foreach($penjualan->detail as $detail){
+                foreach ($penjualan->detail as $detail) {
                     $detail->delete();
                 }
                 $penjualan->delete();
@@ -110,7 +110,10 @@ class User extends Authenticatable
             'total'         => $this->cart->subtotal,
             'bayar'         => $bayar,
             'kembali'       => $kembali,
+            'nomor_transaksi'   => Penjualan::generateInvoiceNumber(),
         ];
+
+
 
         if (!$this->penjualan()->create($data)) {
             throw new Exception('Gagal menyimpan data penjualan');

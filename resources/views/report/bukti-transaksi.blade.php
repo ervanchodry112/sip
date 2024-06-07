@@ -32,7 +32,11 @@
                 <div class="col-1">:</div>
                 <div class="col-6">{{ $penjualan->user->name }}</div>
             </div>
-            <div></div>
+            <div class="row">
+                <div class="col-4">Nomor Transaksi</div>
+                <div class="col-1">:</div>
+                <div class="col-7">{{ $penjualan->nomor_transaksi ?? '-' }}</div>
+            </div>
         </div>
         <table class="table table-bordered">
             <thead class="table-secondary">

@@ -38,6 +38,7 @@
                                     </th>
                                     <th class="text-center" style="width: 15%;">Tgl</th>
                                     <th class="text-center" style="width: 10%">Waktu</th>
+                                    <th class="text-center" style="width: 10%">Nomor Invoice</th>
                                     <th class="text-center" style="width: 45%;">Barang</th>
                                     <th class="text-center" style="width: 15%;">Total</th>
                                     <th class="text-center" style="width: 10%;">Aksi</th>
@@ -54,6 +55,7 @@
                                         <td class="text-center align-middle">
                                             {{ \Carbon\Carbon::parse($item->tgl_penjualan)->isoFormat('D MMMM Y') }}</td>
                                         <td class="text-center align-middle">{{ $item->jam_penjualan }} WIB</td>
+                                        <td class="text-center align-middle">{{ $item->nomor_transaksi ?? '-' }}</td>
                                         <td>
                                             <ul>
                                                 @php

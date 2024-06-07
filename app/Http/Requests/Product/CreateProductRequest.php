@@ -22,7 +22,7 @@ class CreateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'kdbrg'     => 'required|unique:barang,kdbrg',
+            'kdbrg'     => 'sometimes|unique:barang,kdbrg',
             'nmbrg'     => 'required|string',
             'harga'     => 'required|numeric|min:0',
             'stock'     => 'required|numeric|min:0',
@@ -43,7 +43,7 @@ class CreateProductRequest extends FormRequest
             'stock.required'    => 'Stok harus diisi',
             'stock.numeric'     => 'Stok harus dalam bentuk angka',
             'stock.min'         => 'Stok harus lebih besar dari 0',
-            'id_satuan.required'=> 'Satuan harus dipilih',
+            'id_satuan.required' => 'Satuan harus dipilih',
             'id_satuan.exists'  => 'Satuan tidak ditemukan',
         ];
     }

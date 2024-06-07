@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Barang extends Model
 {
@@ -31,15 +32,24 @@ class Barang extends Model
     }
 
     // CRUD
-    public function saveProduk(){
+    public function saveProduk()
+    {
         return $this->save();
     }
 
-    public function updateProduk($data){
+    public function updateProduk($data)
+    {
         return $this->update($data);
     }
 
-    public function deleteProduk(){
+    public function deleteProduk()
+    {
         return $this->delete();
+    }
+
+    public function generateKodeBarang()
+    {
+        $code = substr($this->nmbrg, 0, 3);
+        $this->kdbrg = Str::upper($code . '-' . fake()->bothify('???###'));
     }
 }

@@ -17,6 +17,7 @@ class Penjualan extends Model
         'total',
         'bayar',
         'kembali',
+        'nomor_transaksi',
         'created_by'
     ];
 
@@ -34,5 +35,18 @@ class Penjualan extends Model
     public function deletePenjualan()
     {
         return $this->delete();
+    }
+
+    public static function generateInvoiceNumber()
+    {
+        $last = static::latest()->first();
+
+        if (!$last) {
+            return 'ORD-' . now()->toDateString() . '-0001';
+        }
+
+        $number = preg_replace("/[^0-9\.]/", '', $last->nomor_transaksi);
+
+        return 'ORD-' . now()->toDateString() . '-' . sprintf('%04d', (int)$number + 1);
     }
 }
