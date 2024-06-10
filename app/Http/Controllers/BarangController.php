@@ -43,17 +43,18 @@ class BarangController extends Controller
     public function store(CreateProductRequest $request)
     {
         $produk = new Barang($request->validated());
-
         DB::beginTransaction();
         try {
             $produk->generateKodeBarang();
             if (!$produk->saveProduk()) {
+                dd($produk);
                 throw new Exception('Gagal menyimpan produk!');
             }
             DB::commit();
             return to_route('produk.index')->with('success', 'Berhasil menyimpan produk!');
         } catch (Exception $e) {
             DB::rollBack();
+
             return back()->withInput()->with('error', $e->getMessage());
         }
     }
