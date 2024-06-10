@@ -40,6 +40,7 @@
                                     <th>Nama Barang</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
+                                    <th>Satuan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -58,7 +59,8 @@
                                                 <div>{{ number_format($item->harga) }}</div>
                                             </div>
                                         </td>
-                                        <td>{{ $item->stock }} {{ $item->satuan->nmsatuan }}</td>
+                                        <td>{{ $item->stock }}</td>
+                                        <td>{{ $item->satuan->nmsatuan }}</td>
                                         <td>
                                             <div class="d-flex gap-2">
 

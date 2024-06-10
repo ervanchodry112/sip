@@ -50,6 +50,7 @@ class Barang extends Model
     public function generateKodeBarang()
     {
         $code = substr($this->nmbrg, 0, 3);
-        $this->kdbrg = Str::upper($code . '-' . fake()->bothify('???###'));
+        $number = ItemNumber::getNumber();
+        $this->kdbrg = Str::upper($code . '-' . sprintf('%06d', $number));
     }
 }
