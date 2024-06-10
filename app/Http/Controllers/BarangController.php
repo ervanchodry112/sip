@@ -19,7 +19,7 @@ class BarangController extends Controller
     {
         $data = [
             'title' => 'Produk',
-            'products'  => Barang::paginate(25),
+            'products'  => Barang::whereNull('deleted_at')->paginate(25),
         ];
         return view('pages.produk.index', $data);
     }

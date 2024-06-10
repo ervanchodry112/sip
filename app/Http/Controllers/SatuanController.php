@@ -21,7 +21,7 @@ class SatuanController extends Controller
         // dd(request('search'));
         $data = [
             'title' => 'Satuan',
-            'satuan'    => $satuan->paginate(25),
+            'satuan'    => $satuan->whereNull('deleted_at')->paginate(25),
         ];
 
         return view('pages.satuan.index', $data);
@@ -64,6 +64,9 @@ class SatuanController extends Controller
      */
     public function edit(Satuan $satuan)
     {
+        if (!empty($satuan->deleted_at)) {
+            abort(404);
+        }
         $data = [
             'title' => 'Satuan',
             'satuan'    => $satuan,
@@ -77,6 +80,9 @@ class SatuanController extends Controller
      */
     public function update(UpdateSatuanRequest $request, Satuan $satuan)
     {
+        if (!empty($satuan->deleted_at)) {
+            abort(404);
+        }
         DB::beginTransaction();
 
         try {
@@ -112,7 +118,7 @@ class SatuanController extends Controller
     public function search(Request $request)
     {
         $search = "%$request->search%";
-        $satuan = Satuan::where('nmsatuan', 'like', $search)->get();
+        $satuan = Satuan::whereNull('deleted_at')->where('nmsatuan', 'like', $search)->get();
 
         if (empty($satuan->toArray())) {
             $response = [

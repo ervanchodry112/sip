@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Barang extends Model
@@ -19,6 +20,7 @@ class Barang extends Model
         'harga',
         'stock',
         'terjual',
+        'deleted_at'
     ];
 
     public function satuan()
@@ -44,7 +46,9 @@ class Barang extends Model
 
     public function deleteProduk()
     {
-        return $this->delete();
+        return $this->update([
+            'deleted_at'    => now()
+        ]);
     }
 
     public function generateKodeBarang()

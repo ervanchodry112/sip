@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'user_level',
         'user_status',
+        'deleted_at'
     ];
 
     /**
@@ -94,7 +95,9 @@ class User extends Authenticatable
             return false;
         }
 
-        return $this->delete();
+        return $this->update([
+            'deleted_at' => now(),
+        ]);
     }
 
     public function resetCart()

@@ -12,7 +12,8 @@ class Satuan extends Model
     protected $table = 'satuan';
 
     protected $fillable = [
-        'nmsatuan'
+        'nmsatuan',
+        'deleted_at'
     ];
 
     public function barang()
@@ -29,7 +30,9 @@ class Satuan extends Model
 
     public function hapusSatuan()
     {
-        return $this->delete();
+        return $this->update([
+            'deleted_at'    => now()
+        ]);
     }
 
     public function updateSatuan($data){

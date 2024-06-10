@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $data = [
             'title' => 'User',
-            'users' => User::paginate(25),
+            'users' => User::whereNull('deleted_at')->paginate(25),
         ];
 
         return view('pages.users.index', $data);
@@ -78,6 +78,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if (!empty($user->deleted_at)) {
+            abort(404);
+        }
+
         $data = [
             'title' => 'User',
             'user'  => $user,
@@ -92,6 +96,9 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        if (!empty($user->deleted_at)) {
+            abort(404);
+        }
         $data = $request->validated();
 
         if (!empty($request->user_foto)) {
@@ -133,7 +140,7 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $search = "%$request->search%";
-        $users = User::where('name', 'like', $search)->get();
+        $users = User::where('name', 'like', $search)->whereNull('deleted_at')->get();
         if (empty($users->toArray())) {
             $response = [
                 'status'    => 404,

@@ -24,9 +24,12 @@ class AuthController extends Controller
             return back()->withInput($request->all())->with('error', 'Username atau Password tidak sesuai');
         }
 
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->whereNull('deleted_at')->first();
+        if(empty($user)){
+            return back()->withInput($request->all())->with('error', 'Username atau Password tidak sesuai');
+        }
 
-        if((!empty($user->tokens))){
+        if ((!empty($user->tokens))) {
             $user->tokens()->delete();
         }
 
