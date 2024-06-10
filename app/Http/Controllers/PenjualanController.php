@@ -31,7 +31,7 @@ class PenjualanController extends Controller
     {
         $data = [
             'title'     => 'Tambah Penjualan',
-            'products'  => Barang::get(),
+            'products'  => Barang::whereNull('created_at')->get(),
             'carts'     => auth()->user()->cart->detail,
         ];
 
@@ -132,14 +132,16 @@ class PenjualanController extends Controller
         return response($response);
     }
 
-    public function bukti_transaksi(Penjualan $penjualan){
+    public function bukti_transaksi(Penjualan $penjualan)
+    {
         $data = [
             'penjualan' => $penjualan
         ];
         return view('report.bukti-transaksi', $data);
     }
 
-    public function report(){
+    public function report()
+    {
         $data = [
             'penjualan' => Penjualan::orderBy('created_at', 'DESC')->get(),
             'total'     => Penjualan::sum('total'),
