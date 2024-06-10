@@ -47,7 +47,6 @@ class BarangController extends Controller
         try {
             $produk->generateKodeBarang();
             if (!$produk->saveProduk()) {
-                dd($produk);
                 throw new Exception('Gagal menyimpan produk!');
             }
             DB::commit();
