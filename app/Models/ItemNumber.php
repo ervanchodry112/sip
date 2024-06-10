@@ -18,13 +18,14 @@ class ItemNumber extends Model
     public static function getNumber()
     {
         $latest = static::latest()->first();
-        $new = $latest->last_number + 1;
         if (!empty($latest)) {
+            $new = $latest->last_number + 1;
             $latest->update([
                 'last_number'   => $new,
             ]);
         } else {
-            static::create(['last_number' => 1]);
+            $new = 1;
+            static::create(['last_number' => $new]);
         }
         return $new;
     }
