@@ -31,7 +31,7 @@ class PenjualanController extends Controller
     {
         $data = [
             'title'     => 'Tambah Penjualan',
-            'products'  => Barang::whereNull('created_at')->get(),
+            'products'  => Barang::whereNull('deleted_at')->get(),
             'carts'     => auth()->user()->cart->detail,
         ];
 
