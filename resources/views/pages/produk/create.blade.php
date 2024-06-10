@@ -7,6 +7,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Tambah Barang</div>
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         <form action="{{ route('produk.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
