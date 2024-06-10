@@ -111,7 +111,7 @@ class BarangController extends Controller
     public function search(Request $request)
     {
         $search = "%$request->search%";
-        $produk = Barang::where('nmbrg', 'like', $search)->orWhere('kdbrg', 'like', $search)->with('satuan')->get();
+        $produk = Barang::where('nmbrg', 'like', $search)->orWhere('kdbrg', 'like', $search)->whereNull('deleted_at')->with('satuan')->get();
         if (empty($produk->toArray())) {
             $response = [
                 'status'    => 404,
