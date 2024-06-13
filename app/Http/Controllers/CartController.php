@@ -18,7 +18,7 @@ class CartController extends Controller
         DB::beginTransaction();
         try {
 
-            $barang = Barang::findOrFail($id_barang);
+            $barang = Barang::whereNull('deleted_at')->findOrFail($id_barang);
 
             if (empty($user->cart)) {
                 if (!$user->cart()->create()) {

@@ -130,7 +130,7 @@ class BarangController extends Controller
     public function report()
     {
         $data = [
-            'products'  => Barang::get(),
+            'products'  => Barang::whereNull('deleted_at')->get(),
             'total'     => 0
         ];
 

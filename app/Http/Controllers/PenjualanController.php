@@ -116,7 +116,7 @@ class PenjualanController extends Controller
     public function searchProduk(Request $request)
     {
         $search = "%$request->search%";
-        $produk = Barang::where('nmbrg', 'like', $search)->orWhere('kdbrg', 'like', $search)->with('satuan')->get();
+        $produk = Barang::whereNull('deleted_at')->where('nmbrg', 'like', $search)->orWhere('kdbrg', 'like', $search)->with('satuan')->get();
         if (empty($produk->toArray())) {
             $response = [
                 'status'    => 404,
