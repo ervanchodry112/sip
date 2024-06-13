@@ -204,7 +204,7 @@
         <script>
             let nf = new Intl.NumberFormat();
             const header = {
-                Authorization: 'Bearer {{ session('token') }}'
+                Authorization: "Bearer {{ session('token') }}"
             };
 
             function updateKembalian() {

@@ -25,7 +25,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('username', $request->username)->whereNull('deleted_at')->first();
-        if(empty($user)){
+        if (empty($user)) {
             return back()->withInput($request->all())->with('error', 'Username atau Password tidak sesuai');
         }
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth')->plainTextToken;
 
         Auth::login($user);
-        session(['token' => $token]);
+        $request->session()->put('token', $token);
 
         return to_route('home');
     }
