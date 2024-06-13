@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $data = [
             'title'     => 'Dashboard',
             'users'     => User::count(),
-            'products'  => Barang::count(),
+            'products'  => Barang::whereNull('deleted_at')->count(),
             'selling'   => Penjualan::sum('total'),
         ];
 

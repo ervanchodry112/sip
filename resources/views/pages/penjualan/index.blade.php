@@ -70,7 +70,7 @@
                                                         <div class="d-flex justify-content-between">
                                                             <small>
                                                                 Rp {{ number_format($detail->barang->harga) }} x
-                                                                {{ $detail->quantity }}
+                                                                {{ $detail->quantity }} x
                                                                 {{ $detail->barang->satuan->nmsatuan }}
                                                             </small>
                                                             <div class="fw-semibold">

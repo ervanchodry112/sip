@@ -63,6 +63,7 @@
                                     <th class="text-center">Nama Barang</th>
                                     <th class="text-center">Harga</th>
                                     <th class="text-center">Jumlah</th>
+                                    <th class="text-center">Satuan</th>
                                     <th class="text-center">Total</th>
                                 </tr>
 
@@ -75,7 +76,10 @@
                                         <td class="text-center">{{ $item->barang->nmbrg }}</td>
                                         <td class="text-center">Rp {{ number_format($item->barang->harga) }}</td>
                                         <td class="text-center">
-                                            {{ $item->quantity }} {{ $item->barang->satuan->nmsatuan }}
+                                            {{ $item->quantity }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $item->barang->satuan->nmsatuan }}
                                         </td>
                                         <td class="d-flex justify-content-between text-center">
                                             <span>Rp</span>
@@ -95,7 +99,8 @@
                             </tfoot>
                         </table>
                         <div class="d-flex justify-content-end">
-                            <a href="{{ route('penjualan.bukti-transaksi', $penjualan->id) }}" target="__blank" class="btn btn-success">
+                            <a href="{{ route('penjualan.bukti-transaksi', $penjualan->id) }}" target="__blank"
+                                class="btn btn-success">
                                 <span class="bi bi-printer-fill me-1"></span>
                                 Cetak Bukti Penjualan
                             </a>

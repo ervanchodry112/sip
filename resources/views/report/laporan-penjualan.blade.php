@@ -32,6 +32,7 @@
                     <th class="text-start" style="width: 5%">No.</th>
                     <th>Tanggal</th>
                     <th>Waktu</th>
+                    <th>Nomor Transaksi</th>
                     <th>Barang</th>
                     <th>Total</th>
                 </tr>
@@ -42,6 +43,7 @@
                         <th>{{ $i++ }}</th>
                         <td>{{ $item->tgl_penjualan }}</td>
                         <td>{{ $item->jam_penjualan }}</td>
+                        <td class="text-center">{{ $item->nomor_transaksi ?? '-' }}</td>
                         <td>
                             <ul class="p-1">
                                 @php
