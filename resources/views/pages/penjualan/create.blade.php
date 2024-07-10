@@ -218,6 +218,7 @@
                     if (kembali < 0) {
                         $('#bayar').addClass('is-invalid');
                         $('#kembali').val(0);
+                        d
                         $('btn-checkout').attr('disabled', true);
                         return;
                     }
@@ -369,7 +370,6 @@
                         quantity: qty,
                     },
                     success: function(result) {
-
                         let i = 1;
                         let html = '';
                         if (result.status != 200) {
@@ -422,6 +422,14 @@
                         $('#cart-wrapper').html(html);
                         updateKembalian();
                     },
+                    error: function(error) {
+                        const data = JSON.parse(error.responseText);
+                        const message = data.message
+                        $(`#${id}-qty`).val(data.data.total_item);
+                        $(`#${id}-qty`).addClass('is-invalid');
+
+                        alert(message);
+                    }
                 });
 
                 $('.addQty').attr('disabled', false);

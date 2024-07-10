@@ -140,11 +140,21 @@ class PenjualanController extends Controller
         return view('report.bukti-transaksi', $data);
     }
 
-    public function report()
+    public function report(Request $request)
     {
+        $type = $request->type;
+        if ($type == 'daily') {
+            $penjualan = Penjualan::whereDate('created_at', today())->orderBy('created_at', 'ASC')->get();
+        } else if ($type == 'monthly') {
+            $penjualan = Penjualan::whereMonth('created_at', now()->month)->orderBy('created_at', 'ASC')->get();
+        } else if ($type == 'year') {
+            $penjualan = Penjualan::whereYear('created_at', now()->year)->orderBy('created_at', 'ASC')->get();
+        } else {
+            $penjualan = Penjualan::orderBy('created_at', 'DESC')->get();
+        }
         $data = [
-            'penjualan' => Penjualan::orderBy('created_at', 'DESC')->get(),
-            'total'     => Penjualan::sum('total'),
+            'penjualan' => $penjualan,
+            'total'     => $penjualan->sum('total'),
         ];
 
         return view('report.laporan-penjualan', $data);

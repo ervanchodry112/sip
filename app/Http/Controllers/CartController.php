@@ -88,7 +88,12 @@ class CartController extends Controller
             }
         }
         if ($qty > $detail->barang->stock) {
-            $qty = $detail->barang->stock;
+            $response = [
+                'status'    => 400,
+                'message'   => 'Stok barang tidak mencukupi',
+                'data'      => $user->cart()->with('detail.barang.satuan')->with('user')->first()->toArray()
+            ];
+            return response($response, 400);
         }
 
         DB::beginTransaction();

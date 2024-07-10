@@ -84,8 +84,8 @@
             </tbody>
             <tfoot class="table-secondary">
                 <tr>
-                    <td colspan="3" class="table-light"></td>
-                    <td class="fw-bold text-start pe-4">Total</td>
+                    <td colspan="4" class="table-light"></td>
+                    <td class="fw-bold text-start pe-3">Total</td>
                     <td class="d-flex justify-content-between fw-bold">
                         <span>Rp</span>
                         <span>{{ number_format($total) }}</span>

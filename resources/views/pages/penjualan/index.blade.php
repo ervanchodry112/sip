@@ -18,126 +18,143 @@
                                     <span class="bi bi-search"></span>
                                 </button>
                             </div>
-                            <div>
-                                <a href="{{ route('penjualan.report') }}" target="__blank" class="btn btn-sm btn-success">
-                                    <span class="bi bi-printer"></span>
-                                    Cetak Laporan
-                                </a>
+                            <div class="d-flex gap-3 align-items-center">
+                                <div>
+                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="bi bi-printer"></span>
+                                        Cetak Laporan
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item"
+                                                href="{{ route('penjualan.report') . '?type=daily' }}">Harian</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                href="{{ route('penjualan.report') . '?type=monthly' }}">Bulanan</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                href="{{ route('penjualan.report') . '?type=year' }}">Tahunan</a>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <a href="{{ route('penjualan.create') }}" class="btn btn-sm btn-primary">
                                     <span class="bi bi-plus-circle"></span>
                                     Tambah Data
                                 </a>
                             </div>
                         </div>
-                        <x-session-alert />
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" style="width: 5%;">
-                                        No.
-                                    </th>
-                                    <th class="text-center" style="width: 15%;">Tgl</th>
-                                    <th class="text-center" style="width: 10%">Waktu</th>
-                                    <th class="text-center" style="width: 10%">Nomor Invoice</th>
-                                    <th class="text-center" style="width: 45%;">Barang</th>
-                                    <th class="text-center" style="width: 15%;">Total</th>
-                                    <th class="text-center" style="width: 10%;">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-data">
-                                @php
-                                    $i = 1;
-
-                                @endphp
-                                @forelse ($penjualan as $item)
-                                    <tr>
-                                        <td class="text-center align-middle">{{ $i++ }}</td>
-                                        <td class="text-center align-middle">
-                                            {{ \Carbon\Carbon::parse($item->tgl_penjualan)->isoFormat('D MMMM Y') }}</td>
-                                        <td class="text-center align-middle">{{ $item->jam_penjualan }} WIB</td>
-                                        <td class="text-center align-middle">{{ $item->nomor_transaksi ?? '-' }}</td>
-                                        <td>
-                                            <ul>
-                                                @php
-                                                    $j = 1;
-                                                @endphp
-                                                @foreach ($item->detail as $detail)
-                                                    <li style="list-style: none;">
-                                                        <div>
-                                                            <span class="fw-bold">{{ $detail->barang->nmbrg }}</span> /
-                                                            <small>{{ $detail->barang->kdbrg }}</small>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <small>
-                                                                Rp {{ number_format($detail->barang->harga) }} x
-                                                                {{ $detail->quantity }} x
-                                                                {{ $detail->barang->satuan->nmsatuan }}
-                                                            </small>
-                                                            <div class="fw-semibold">
-                                                                Rp {{ number_format($detail->jumlah) }}
-                                                            </div>
-
-                                                        </div>
-                                                    </li>
-                                                    @if ($j++ < count($item->detail))
-                                                        <hr>
-                                                    @endif
-                                                @endforeach
-                                            </ul>
-                                        </td>
-                                        <td class="fw-semibold text-center align-middle">Rp
-                                            {{ number_format($item->total) }}</td>
-                                        <td class="text-center align-middle">
-                                            <a href="{{ route('penjualan.show', $item->id) }}"
-                                                class="btn btn-sm btn-warning w-100 mb-2">
-                                                <span class="bi bi-eye-fill"></span>
-                                                Detail
-                                            </a>
-                                            <a href="{{ route('penjualan.bukti-transaksi', $item->id) }}"
-                                                class="btn btn-sm btn-success w-100 mb-2" target="__blank">
-                                                <span class="bi bi-printer-fill"></span>
-                                                Cetak
-                                            </a>
-                                            <form action="{{ route('penjualan.destroy', $item->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    onclick="return confirm('Yakin ingin menghapus data?')"
-                                                    class="btn btn-sm btn-danger w-100">
-                                                    <span class="bi bi-trash-fill"></span>
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center py-3">
-                                            <div>
-                                                <span class="bi bi-exclamation-square fs-1"></span>
-                                            </div>
-                                            <div class="fw-semibold fs-4">Belum ada data</div>
-                                            <div>
-                                                <a href="{{ route('penjualan.create') }}"
-                                                    class="btn btn-sm btn-primary bg-gradient mt-2">
-                                                    <span class="bi bi-plus-circle"></span>
-                                                    Tambah Data
-                                                </a>
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
-
-                        {{ $penjualan->links() }}
                     </div>
+                    <x-session-alert />
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 5%;">
+                                    No.
+                                </th>
+                                <th class="text-center" style="width: 15%;">Tgl</th>
+                                <th class="text-center" style="width: 10%">Waktu</th>
+                                <th class="text-center" style="width: 10%">Nomor Invoice</th>
+                                <th class="text-center" style="width: 45%;">Barang</th>
+                                <th class="text-center" style="width: 15%;">Total</th>
+                                <th class="text-center" style="width: 10%;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-data">
+                            @php
+                                $i = 1;
+
+                            @endphp
+                            @forelse ($penjualan as $item)
+                                <tr>
+                                    <td class="text-center align-middle">{{ $i++ }}</td>
+                                    <td class="text-center align-middle">
+                                        {{ \Carbon\Carbon::parse($item->tgl_penjualan)->isoFormat('D MMMM Y') }}</td>
+                                    <td class="text-center align-middle">{{ $item->jam_penjualan }} WIB</td>
+                                    <td class="text-center align-middle">{{ $item->nomor_transaksi ?? '-' }}</td>
+                                    <td>
+                                        <ul>
+                                            @php
+                                                $j = 1;
+                                            @endphp
+                                            @foreach ($item->detail as $detail)
+                                                <li style="list-style: none;">
+                                                    <div>
+                                                        <span class="fw-bold">{{ $detail->barang->nmbrg }}</span> /
+                                                        <small>{{ $detail->barang->kdbrg }}</small>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <small>
+                                                            Rp {{ number_format($detail->barang->harga) }} x
+                                                            {{ $detail->quantity }} x
+                                                            {{ $detail->barang->satuan->nmsatuan }}
+                                                        </small>
+                                                        <div class="fw-semibold">
+                                                            Rp {{ number_format($detail->jumlah) }}
+                                                        </div>
+
+                                                    </div>
+                                                </li>
+                                                @if ($j++ < count($item->detail))
+                                                    <hr>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                    <td class="fw-semibold text-center align-middle">Rp
+                                        {{ number_format($item->total) }}</td>
+                                    <td class="text-center align-middle">
+                                        <a href="{{ route('penjualan.show', $item->id) }}"
+                                            class="btn btn-sm btn-warning w-100 mb-2">
+                                            <span class="bi bi-eye-fill"></span>
+                                            Detail
+                                        </a>
+                                        <a href="{{ route('penjualan.bukti-transaksi', $item->id) }}"
+                                            class="btn btn-sm btn-success w-100 mb-2" target="__blank">
+                                            <span class="bi bi-printer-fill"></span>
+                                            Cetak
+                                        </a>
+                                        <form action="{{ route('penjualan.destroy', $item->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus data?')"
+                                                class="btn btn-sm btn-danger w-100">
+                                                <span class="bi bi-trash-fill"></span>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-3">
+                                        <div>
+                                            <span class="bi bi-exclamation-square fs-1"></span>
+                                        </div>
+                                        <div class="fw-semibold fs-4">Belum ada data</div>
+                                        <div>
+                                            <a href="{{ route('penjualan.create') }}"
+                                                class="btn btn-sm btn-primary bg-gradient mt-2">
+                                                <span class="bi bi-plus-circle"></span>
+                                                Tambah Data
+                                            </a>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+
+                    {{ $penjualan->links() }}
                 </div>
-
-
             </div>
+
+
+        </div>
         </div>
     </section>
     @push('scripts')
