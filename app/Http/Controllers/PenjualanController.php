@@ -145,16 +145,21 @@ class PenjualanController extends Controller
         $type = $request->type;
         if ($type == 'daily') {
             $penjualan = Penjualan::whereDate('created_at', today())->orderBy('created_at', 'ASC')->get();
+            $format = now()->isoFormat('D MMMM Y');
         } else if ($type == 'monthly') {
             $penjualan = Penjualan::whereMonth('created_at', now()->month)->orderBy('created_at', 'ASC')->get();
+            $format = now()->isoFormat('MMMM Y');
         } else if ($type == 'year') {
             $penjualan = Penjualan::whereYear('created_at', now()->year)->orderBy('created_at', 'ASC')->get();
+            $format = now()->isoFormat('Y');
         } else {
             $penjualan = Penjualan::orderBy('created_at', 'DESC')->get();
+            $format = now()->isoFormat('D MMMM Y');
         }
         $data = [
             'penjualan' => $penjualan,
             'total'     => $penjualan->sum('total'),
+            'waktu'     => $format
         ];
 
         return view('report.laporan-penjualan', $data);

@@ -504,6 +504,44 @@
                         $('#cart-wrapper').html(html);
                         $('#btn-search').attr('disabled', false);
                     },
+                    error: function(error) {
+                        const result = JSON.parse(error.responseText);
+                        const message = result.message
+                        let html = '';
+                        let i = 1;
+                        $(`#${id}-qty`).val(result.data.total_item);
+                        result.data.detail.forEach(element => {
+                            html += `<tr>
+                                        <td>${i++}</td>
+                                        <td>${element.barang.nmbrg}</td>
+                                        <td class="d-flex align-items-center gap-2">
+                                            <input type="number" class="form-control" name="${element.id}-qty"
+                                                onchange="changeQty(${element.id}, null, true)"
+                                                id="${element.id}-qty" value="${element.quantity}">
+                                            ${element.barang.satuan.nmsatuan}
+                                        </td>
+                                        <td class="">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>Rp</div>
+                                                <div class="ms-auto">${element.subtotal}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            ${result.data.user.name}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning text-white" onclick="changeQty(${element.id}, null, true)">Update</button>
+                                            <button type="button" class="btn btn-sm btn-danger text-white" onclick="deleteItem(${element.id})">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </td>
+                                    </tr>`;
+                        });
+                        $('#total').val(nf.format(result.data.subtotal));
+                        $('#cart-wrapper').html(html);
+                        $('#btn-search').attr('disabled', false);
+                        alert(message);
+                    }
                 })
                 $('.addCartBtn').attr('disabled', false);
             }

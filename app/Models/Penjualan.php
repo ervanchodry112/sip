@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Penjualan extends Model
 {
@@ -45,7 +46,7 @@ class Penjualan extends Model
             return 'ORD-' . now()->toDateString() . '-0001';
         }
 
-        $number = preg_replace("/[^0-9\.]/", '', $last->nomor_transaksi);
+        $number = Str::afterLast($last->nomor_transaksi, '-',);
 
         return 'ORD-' . now()->toDateString() . '-' . sprintf('%04d', (int)$number + 1);
     }

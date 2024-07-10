@@ -31,6 +31,14 @@ class CartController extends Controller
             $check = $user->cart->detail()->where('id_barang', $id_barang)->first();
             if (!empty($check)) {
                 $qty = (int)$check->quantity + 1;
+                if ($qty > $barang->stock) {
+                    $response = [
+                        'status'    => 400,
+                        'message'   => 'Stok barang tidak mencukupi',
+                        'data'      => $user->cart()->with('detail.barang.satuan')->with('user')->first()->toArray()
+                    ];
+                    return response($response, 400);
+                }
                 $subtotal = $barang->harga * $qty;
                 if (!$check->update([
                     'quantity'  => $qty,
