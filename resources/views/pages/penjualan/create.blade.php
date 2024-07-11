@@ -241,7 +241,7 @@
                     headers: header,
                     data: {
                         bayar: $('#bayar').val(),
-                        kembali: $('#kembali').val()
+                        kembali: parseInt($('#kembali').val())
                     },
                     success: function(res) {
                         console.log(res);
@@ -425,7 +425,8 @@
                     error: function(error) {
                         const data = JSON.parse(error.responseText);
                         const message = data.message
-                        $(`#${id}-qty`).val(data.data.total_item);
+                        const barang = data.data.detail.find(item => item.id == id)
+                        $(`#${id}-qty`).val(barang.quantity);
                         $(`#${id}-qty`).addClass('is-invalid');
 
                         alert(message);
