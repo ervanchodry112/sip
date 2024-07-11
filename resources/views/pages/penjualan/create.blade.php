@@ -218,7 +218,6 @@
                     if (kembali < 0) {
                         $('#bayar').addClass('is-invalid');
                         $('#kembali').val(0);
-                        d
                         $('btn-checkout').attr('disabled', true);
                         return;
                     }
