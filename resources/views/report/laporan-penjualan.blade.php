@@ -22,7 +22,7 @@
 <body>
     <div class="container-md p-4">
         <h2 class="text-center">CV. Karya Mandiri</h2>
-        <h4 class="text-center">Laporan Penjualan</h4>
+        <h4 class="text-center">Laporan Kertas Kerja Penjualan</h4>
         <div class="text-center fs-5">{{ $waktu }}</div>
         <hr>
         <table class="table table-bordered">

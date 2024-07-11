@@ -224,7 +224,7 @@
                     }
                     $('#btn-checkout').attr('disabled', false);
                     $('#bayar').removeClass('is-invalid');
-                    $('#kembali').val(kembali);
+                    $('#kembali').val(nf.format(kembali));
                 }
             }
 
